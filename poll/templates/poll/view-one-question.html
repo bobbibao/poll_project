@@ -1,0 +1,65 @@
+{% extends 'poll/base.html' %}
+{% block title %}
+  View Vote
+{% endblock title %}  
+
+{% block main %}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<main>
+  <h5>{{poll.question}}</h5>
+  <div id="pie-chart"></div>
+	<p>Google Charts can be <a href="https://google-developers.appspot.com/chart/">found here</a>.</p>
+	<p>An original pen by <a href="https://codepen.io/ejsado/">Eric</a>.</p>
+  
+</main>
+<!-- partial -->
+  <script>
+    google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawCharts);
+function drawCharts() {
+
+  // BEGIN PIE CHART
+  
+  // pie chart data
+  var pieData = google.visualization.arrayToDataTable([
+    ['options', 'vote'],
+    ['{{poll.option_one}}',      {{poll.option_one_count}}],
+    ['{{poll.option_two}}',   {{poll.option_two_count}}],
+    ['{{poll.option_three}}',   {{poll.option_three_count}}],
+  
+  ]);
+  // pie chart options
+  var pieOptions = {
+    backgroundColor: 'transparent',
+    pieHole: 0.4,
+    colors: [ "cornflowerblue", 
+              "olivedrab", 
+              "orange", 
+              "tomato", 
+              "crimson", 
+              "purple", 
+              "turquoise", 
+              "forestgreen", 
+              "navy", 
+              "gray"],
+    pieSliceText: 'value',
+    tooltip: {
+      text: 'percentage'
+    },
+    fontName: 'Open Sans',
+    chartArea: {
+      width: '100%',
+      height: '94%'
+    },
+    legend: {
+      textStyle: {
+        fontSize: 13
+      }
+    }
+  };
+  // draw pie chart
+  var pieChart = new google.visualization.PieChart(document.getElementById('pie-chart'));
+  pieChart.draw(pieData, pieOptions);
+}
+  </script>
+{% endblock %}
